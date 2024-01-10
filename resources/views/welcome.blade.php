@@ -9,11 +9,78 @@
     <style>
         canvas {
             border: 1px solid #000;
-            cursor: crosshair;
+            cursor: default;
+        }
+
+        button {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        #zoomIndicator {
+            position: absolute;
+            bottom: 60px;
+            left: 10px;
+            font-size: 14px;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <canvas id="drawingCanvas" width="800" height="600"></canvas>
+    <div id="zoomIndicator">Zoom: 100%</div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = new fabric.Canvas('drawingCanvas');
+
+            const zoomIndicator = document.getElementById('zoomIndicator');
+
+            const handleZoom = (factor) => {
+                canvas.setZoom(canvas.getZoom() * factor);
+                updateZoomIndicator();
+            };
+
+            const updateZoomIndicator = () => {
+                const zoomPercentage = Math.round(canvas.getZoom() * 100);
+                zoomIndicator.innerText = `Zoom: ${zoomPercentage}%`;
+            };
+
+            const createButton = (text, iconClass, clickHandler) => {
+                const button = document.createElement('button');
+                button.innerHTML = `<i class="${iconClass}"></i> ${text}`;
+                button.addEventListener('click', clickHandler);
+                document.body.appendChild(button);
+                return button;
+            };
+
+            const buttonsData = [
+                { iconClass: 'fas fa-search-plus', handler: () => handleZoom(1.2) },
+                { iconClass: 'fas fa-search-minus', handler: () => handleZoom(1 / 1.2) },
+            ];
+
+            buttonsData.forEach((buttonData, index) => {
+                const { iconClass, handler } = buttonData;
+                const button = createButton('', iconClass, handler);
+                button.style.left = `${10 + 50 * index}px`;
+                button.style.bottom = '10px';
+            });
+
+            updateZoomIndicator();
+        });
+
+    </script>
 </body>
 </html>
