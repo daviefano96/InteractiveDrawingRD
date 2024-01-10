@@ -38,24 +38,33 @@
     </style>
 </head>
 <body>
-    <canvas id="drawingCanvas" width="800" height="600"></canvas>
-    <div id="zoomIndicator">Zoom: 100%</div>
+    <div>
+        <canvas id="drawingCanvas" width="800" height="600"></canvas>
+        <div id="zoomIndicator">Zoom: 100%</div>
+
+        <input type="range" id="lineWidthInput" min="1" max="20" value="2">
+        <input type="color" id="lineColorInput" value="#000000">
+    </div>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', () => {
-            const canvas = new fabric.Canvas('drawingCanvas');
+            const fabricCanvas = new fabric.Canvas('drawingCanvas', {
+                isDrawingMode: true,
+                freeDrawingCursor: 'crosshair',
+            });
 
-            const zoomIndicator = document.getElementById('zoomIndicator');
+            fabric.Object.prototype.transparentCorners = false;
+
+            const getById = (id) => document.getElementById(id);
 
             const handleZoom = (factor) => {
-                canvas.setZoom(canvas.getZoom() * factor);
+                fabricCanvas.setZoom(fabricCanvas.getZoom() * factor);
                 updateZoomIndicator();
             };
 
             const updateZoomIndicator = () => {
-                const zoomPercentage = Math.round(canvas.getZoom() * 100);
-                zoomIndicator.innerText = `Zoom: ${zoomPercentage}%`;
+                const zoomPercentage = Math.round(fabricCanvas.getZoom() * 100);
+                getById('zoomIndicator').innerText = `Zoom: ${zoomPercentage}%`;
             };
 
             const createButton = (text, iconClass, clickHandler) => {
@@ -66,21 +75,42 @@
                 return button;
             };
 
+            const toggleDrawingMode = () => {
+                fabricCanvas.isDrawingMode = !fabricCanvas.isDrawingMode;
+                getById('drawingToolButton').innerHTML = `<i class="${fabricCanvas.isDrawingMode ? 'fas fa-pen' : 'fas fa-mouse-pointer'}"></i>`;
+            };
+
             const buttonsData = [
                 { iconClass: 'fas fa-search-plus', handler: () => handleZoom(1.2) },
                 { iconClass: 'fas fa-search-minus', handler: () => handleZoom(1 / 1.2) },
             ];
 
+            const drawingToolButton = createButton('', 'fas fa-pen', toggleDrawingMode);
+            drawingToolButton.style.left = '10px';
+            drawingToolButton.style.bottom = '10px';
+            document.body.appendChild(drawingToolButton);
+
             buttonsData.forEach((buttonData, index) => {
                 const { iconClass, handler } = buttonData;
                 const button = createButton('', iconClass, handler);
-                button.style.left = `${10 + 50 * index}px`;
+                button.style.left = `${70 + 60 * index}px`;
                 button.style.bottom = '10px';
             });
 
-            updateZoomIndicator();
-        });
+            const updateLineWidth = () => {
+                fabricCanvas.freeDrawingBrush.width = parseInt(getById('lineWidthInput').value, 10) || 2;
+            };
 
+            const updateLineColor = () => {
+                fabricCanvas.freeDrawingBrush.color = getById('lineColorInput').value;
+            };
+
+            getById('lineWidthInput').addEventListener('input', updateLineWidth);
+            getById('lineColorInput').addEventListener('input', updateLineColor);
+
+            updateLineWidth();
+            updateLineColor();
+        });
     </script>
 </body>
 </html>
