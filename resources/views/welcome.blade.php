@@ -84,9 +84,11 @@
             ];
 
             const drawingToolButton = createButton('', 'fas fa-pen', toggleDrawingMode);
+            drawingToolButton.id = 'drawingToolButton'
             drawingToolButton.style.left = '10px';
             drawingToolButton.style.bottom = '10px';
             document.body.appendChild(drawingToolButton);
+
 
             buttonsData.forEach((buttonData, index) => {
                 const { iconClass, handler } = buttonData;
