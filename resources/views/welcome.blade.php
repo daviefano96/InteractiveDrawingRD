@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Drawing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.3/fabric.min.js"></script>
     <style>
         canvas {
             border: 1px solid #000;
@@ -27,24 +27,22 @@
             justify-content: center;
             font-size: 12px;
         }
-
-        #zoomIndicator {
-            position: absolute;
-            bottom: 60px;
-            left: 10px;
-            font-size: 14px;
-            color: #333;
-        }
     </style>
 </head>
 <body>
-    <div>
-        <canvas id="drawingCanvas" width="800" height="600"></canvas>
-        <div id="zoomIndicator">Zoom: 100%</div>
-
-        <input type="range" id="lineWidthInput" min="1" max="20" value="2">
-        <input type="color" id="lineColorInput" value="#000000">
+    <div class="d-flex">
+        <div class="m-4">
+            <canvas id="drawingCanvas" width="800" height="600"></canvas>
+        </div>
+        <div class="mt-5">
+            <div id="zoomIndicator">Zoom: 100% </div>
+            <div class="mt-3">
+                <input type="range" id="lineWidthInput" min="1" max="20" value="2">
+                <input type="color" id="lineColorInput" value="#000000">
+            </div>
+        </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.3/fabric.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -112,5 +110,8 @@
             updateLineColor();
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 </body>
 </html>
