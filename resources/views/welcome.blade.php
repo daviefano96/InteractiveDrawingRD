@@ -14,6 +14,7 @@
     </style>
 </head>
 <body>
+    testing
     <canvas id="drawingCanvas" width="800" height="600"></canvas>
 </body>
 </html>
